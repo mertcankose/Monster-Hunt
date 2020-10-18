@@ -5,17 +5,17 @@ new Vue({
     healthMe: 100,
     healthMonster: 100,
     attackMultiple: 10,
-    specialAttackMultiple: 20,
-    monsterAttackMultiple: 15,
+    specialAttackMultiple: 15,
+    monsterAttackMultiple: 10,
     firstAidMultiple: 20,
     logText: {
-      personAttack: "Oyuncu Atağı!",
-      personSpecialAttack: "Özel Oyuncu Atağı",
-      monsterAttack: "Monster Atağı!",
-      firstAid: "İlk YARDIM",
-      giveUp: "Oyuncu Pes Etti!",
+      personAttack: "Player Attack!",
+      personSpecialAttack: "Special Player Attack!",
+      monsterAttack: "Monster Attack!",
+      firstAid: "First Aid",
+      giveUp: "The player gave up!"
     },
-    logs: [],
+    logs: []
   },
   methods: {
     startGame: function () {
@@ -23,23 +23,24 @@ new Vue({
     },
 
     attack: function () {
-      var personPowerAttack = Math.floor(Math.random() * this.attackMultiple);
+      let personPowerAttack = Math.floor(Math.random() * this.attackMultiple);
       this.healthMonster -= personPowerAttack;
       this.monsterAttack();
       this.addToLog({
         turn: "Person",
-        text: this.logText.personAttack + "(" + personPowerAttack + ")",
+        text: this.logText.personAttack + "(" + personPowerAttack + ")"
       });
     },
 
     specialAttack: function () {
-      var personPowerAttack =
-        Math.floor(Math.random() * this.specialAttackMultiple) + 10;
+      let personPowerAttack = Math.floor(
+        Math.random() * this.specialAttackMultiple
+      );
       this.healthMonster -= personPowerAttack;
       this.monsterAttack();
       this.addToLog({
         turn: "Person",
-        text: this.logText.personSpecialAttack + "(" + personPowerAttack + ")",
+        text: this.logText.personSpecialAttack + "(" + personPowerAttack + ")"
       });
     },
 
@@ -49,12 +50,12 @@ new Vue({
       this.monsterAttack();
       this.addToLog({
         turn: "Person",
-        text: this.logText.firstAid + "(" + aid + ")",
+        text: this.logText.firstAid + "(" + aid + ")"
       });
     },
 
     giveUp: function () {
-      var answ = confirm("Bitirmek İstiyor musun?");
+      var answ = confirm("Do you want to finish?");
       if (answ === true) {
         this.startGameControl = false;
         this.healthMe = 0;
@@ -69,19 +70,21 @@ new Vue({
       this.healthMe -= monsterPowerAttack;
       this.addToLog({
         turn: "Monster",
-        text: this.logText.monsterAttack + "(" + monsterPowerAttack + ")",
+        text: this.logText.monsterAttack + "(" + monsterPowerAttack + ")"
       });
     },
 
     addToLog: function (log) {
       this.logs.push(log);
-    },
+    }
   },
   watch: {
     healthMe: function (value) {
       if (value <= 0) {
         this.healthMe = 0;
-        var lose = confirm("Oyunu kaybettin!. Tekrar Denemek İster misin?");
+        var lose = confirm(
+          "You have lost the game!. Do you want to try again?"
+        );
         if ((lose = true)) {
           this.healthMe = 100;
           this.healthMonster = 100;
@@ -94,25 +97,25 @@ new Vue({
     healthMonster: function (value) {
       if (value <= 0) {
         this.healthMonster = 0;
-        var win = confirm("Kazandın!. Tekrar Denemek İster misin?");
+        var win = confirm("You won the game! Do you want to try again?");
         if ((win = true)) {
           this.healthMe = 100;
           this.healthMonster = 100;
           this.logs = [];
         }
       }
-    },
+    }
   },
   computed: {
     playerProgress: function () {
       return {
-        width: this.healthMe + "%",
+        width: this.healthMe + "%"
       };
     },
     monsterProgress: function () {
       return {
-        width: this.healthMonster + "%",
+        width: this.healthMonster + "%"
       };
-    },
-  },
+    }
+  }
 });
